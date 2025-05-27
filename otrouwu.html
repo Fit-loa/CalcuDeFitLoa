@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Peso</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+    }
+
+    h1 {
+      margin-top: 30px;
+    }
+
+    .warning {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: white;
+      z-index: 1000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .rotar {
+      width: 300px;
+      height: auto;
+      animation: girar 5s linear infinite;
+    }
+
+    .no-rotar {
+      width: 300px;
+      height: auto;
+    }
+
+    @keyframes girar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .mensaje {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: red;
+    }
+
+    #musica {
+      display: none;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Selecciona una opción</h1>
+
+  <label><input type="radio" name="sexo" value="femenino"> Femenino</label>
+  <label><input type="radio" name="sexo" value="masculino"> Masculino</label>
+  <label><input type="radio" name="sexo" value="gay"> Mis papas me abandonaron y soy Gay</label>
+  <label><input type="radio" name="sexo" value="trans"> No pudieron abortarme entonces soy trans</label>
+
+  <div style="margin-top: 20px;">
+    <label for="peso">Ingresa tu peso en kg:</label>
+    <input type="number" id="peso" placeholder="Ej: 75">
+    <button onclick="calcular()">Calcular</button>
+  </div>
+
+  <div class="warning" id="advertencia">
+    <div class="mensaje" id="mensajeGordo"></div>
+    <img id="imagen" src="dudoso.jpeg" alt="Advertencia">
+    <div id="musica"></div>
+    <div class="buttons">
+      <button onclick="resetear()">Atrás</button>
+    </div>
+  </div>
+
+  <script>
+    function calcular() {
+      const peso = parseFloat(document.getElementById("peso").value);
+      const sexo = document.querySelector('input[name="sexo"]:checked');
+      const advertencia = document.getElementById("advertencia");
+      const musica = document.getElementById("musica");
+      const mensaje = document.getElementById("mensajeGordo");
+      const imagen = document.getElementById("imagen");
+
+      
+      advertencia.style.display = "none";
+      mensaje.textContent = "";
+      musica.innerHTML = "";
+      imagen.style.display = "none";
+      imagen.className = ""; 
+
+      if (peso > 85) {
+        advertencia.style.display = "flex";
+        imagen.src = "gordx.png"; 
+        imagen.className = "rotar"; 
+        imagen.style.display = "block";
+
+        if (sexo) {
+          if (sexo.value === "femenino") {
+            mensaje.textContent = "¡¡¡GORDAAAAAAAAAAAA!!!";
+          } else if (sexo.value === "masculino") {
+            mensaje.textContent = "¡¡¡GORDOOOOOOOOOOOO!!!";
+          } else if (sexo.value === "gay") {
+            mensaje.textContent = "¡¡¡MARIKA SOS GORDO IGUAL!!!";
+          } else if (sexo.value === "trans") {
+            mensaje.textContent = "¡¡¡Q ASCOO, APLICATE LA EUTANASIA GORDO!!!";
+          }
+        } else {
+          mensaje.textContent = "Por favor, selecciona una opción.";
+        }
+
+        
+        if (!document.getElementById("iframeMusica")) {
+          const iframe = document.createElement("iframe");
+          iframe.id = "iframeMusica";
+          iframe.width = "0";
+          iframe.height = "0";
+          iframe.src = "https://www.youtube.com/embed/m2wpyNBWRLw?autoplay=1&loop=1&playlist=m2wpyNBWRLw";
+          iframe.frameBorder = "0";
+          iframe.allow = "autoplay; fullscreen";
+          musica.appendChild(iframe);
+        }
+      } else if (peso < 85 && peso > 0) {
+        advertencia.style.display = "flex";
+        imagen.src = "dudoso.jpeg";
+        imagen.className = "no-rotar";
+        imagen.style.display = "block";
+
+        if (sexo) {
+          mensaje.textContent = "¡Ta perfecto! No hay nada que decirte crack";
+        } else {
+          mensaje.textContent = "Ta perfecto";
+        }
+
+
+        if (!document.getElementById("iframeMusica")) {
+          const iframe = document.createElement("iframe");
+          iframe.id = "iframeMusica";
+          iframe.width = "0";
+          iframe.height = "0";
+          iframe.src = "https://www.youtube.com/embed/V8BQEmi7Wtw?autoplay=1&loop=1&playlist=V8BQEmi7Wtw";
+          iframe.frameBorder = "0";
+          iframe.allow = "autoplay; fullscreen";
+          musica.appendChild(iframe);
+        }
+      }
+    }
+
+    function resetear() {
+      const advertencia = document.getElementById("advertencia");
+      const musica = document.getElementById("musica");
+      const mensaje = document.getElementById("mensajeGordo");
+      const imagen = document.getElementById("imagen");
+      const radios = document.getElementsByName("sexo");
+      const pesoInput = document.getElementById("peso");
+
+      
+      advertencia.style.display = "none";
+      mensaje.textContent = "";
+      musica.innerHTML = "";
+      imagen.style.display = "none";
+      imagen.className = "";
+      pesoInput.value = ""; 
+      radios.forEach(radio => radio.checked = false);
+    }
+  </script>
+
+</body>
+</html>
